@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '22' # Specify your Node.js version
+          node-version: '20' # Specify your Node.js version
 
       - name: Install dependencies
         run: npm install
@@ -32,7 +32,7 @@ jobs:
 
       - name: Upload Artifacts
         if: success()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-build
           path: out/make # Adjust according to your build output directory
@@ -42,22 +42,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ubuntu-latest-build
           path: ubuntu-build
 
       - name: Download Mac Build Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: macos-latest-build
           path: mac-build
 
       - name: Download Windows Build Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: windows-latest-build
           path: windows-build
@@ -67,7 +67,7 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -77,7 +77,7 @@ jobs:
           prerelease: false
 
       - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -87,7 +87,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Mac Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -97,7 +97,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Windows Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -107,7 +107,7 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload Example Folder Zip
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
