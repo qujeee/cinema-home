@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}-build
-          path: out/ # Adjust according to your build output directory
+          path: out/make # Adjust according to your build output directory
 
   release:
     needs: build
@@ -62,7 +62,7 @@ jobs:
           name: windows-latest-build
           path: windows-build
 
-      - name: Zip the other folder
+      - name: Zip the example folder
         run: zip -r example.zip example
 
       - name: Create GitHub Release
@@ -106,7 +106,7 @@ jobs:
           asset_name: cinema-home-windows.exe
           asset_content_type: application/octet-stream
 
-      - name: Upload Other Folder Zip
+      - name: Upload Example Folder Zip
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
