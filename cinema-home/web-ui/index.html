@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./output.css" rel="stylesheet">
+    <title>Cinema Home</title>
+</head>
+<body>
+    <div class="max-w-md">
+        <div class="mb-2 flow-root">
+            <h1 class="text-3xl font-bold mb-2 float-left">Cinema Home</h1>
+            <button class="btn btn-xs float-right" onclick="settings_modal.showModal()">Settings</button>
+        </div>
+        
+
+        
+        <div class="relative mb-2">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"></path>
+                </svg>
+            </div>
+            <input type="search" id="searchInput" class="block w-full p-4 ps-10 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search movies from Jellyfin" required="" control-id="ControlID-1">
+            
+            <!-- <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button> -->
+        </div>
+        <ul id="results" class="mb-2"></ul>
+        
+        <div class="mb-4">
+            <div class="w-full flex gap-1.5">
+                <button id="rewind-button" class="text-white grow bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2">⏪︎ 15s back</button>
+                <button id="forward-button" class="text-white flex-grow bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2">15s forward ⏩︎</button>
+                <button id="skip-button" class="text-white flex-grow bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2">Skip ⏭️</button>
+            </div>
+            <button id="break-button" class="text-white bg-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-4 py-2 dark:bg-amber-500 dark:focus:ring-amber-400 w-full">Toggle break now</button>
+        </div>
+        
+        <p class="control-label">Volume:</p>
+        <input type="range" min="0" max="100" value="0" class="range range-primary" id="volume"/>
+        
+        <div class="form-control">
+            <label class="cursor-pointer label">
+              <span class="control-label">Enable auto breaks mid-movie</span> 
+              <input type="checkbox" class="toggle toggle-primary" id="auto-break" checked />
+            </label>
+          </div>
+    </div>
+    <dialog id="settings_modal" class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg mb-2">Settings</h3>
+          <div class="relative mb-2">
+            <input id="dir" class="block w-full p-4 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter the folder path to your setup" required />
+          </div>
+          <button id="send-dir" class="w-full text-white flex-grow bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2">Save and restart the server</button>
+          
+          <div class="modal-action flow-grow">
+            <button class="btn" onclick="window.open('https://github.com/qujeee/cinema-home', '_blank')">
+              Star on GitHub
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+            </button>
+            <form method="dialog" class="">
+              <button class="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      
+    <script src="./index.js"></script>
+</body>
+</html>

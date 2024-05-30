@@ -1,0 +1,20 @@
+mainImage: welcome.png # the image that will be shown when no content is playing
+breakImage: intermission.png # the image that will be shown when an intermission is active
+sequence: # every time you start a movie this sequence will be played
+  - c: cc_ink_stamp_animation.mp4 # c stands for content and needs to be a video file from /videos
+    HA: cinema_dim_lights #optional a home assistant script that will be called when content starts
+  - c: commercials #optional commerical block with commercialAmmount of commercials from /commercials
+  - c: trailers #optional trailer block with trailerAmount of trailers from /trailers
+  - c: cc_logo_close-up_animation.mp4
+  - c: movie # this will be the movie that you selected from the web-ui
+    HA: cinema_turn_off_lights
+commercialAmmount: 3 # the amount of commercials that will be included in the commercial block
+trailerAmount: 2 # the amount of trailers that will be inlcuded in the trailer block
+trailerFetchScript: fetch_script.js #optional a Javascript script that will be called to fetch trailers (will run every 24 hours), for example: tmbd_fetch_trailers.js (make sure to run npm install axios ytdl-core when using this script)
+autoBreak: true # will auto start an intermission mid movie
+breakHAScript: cinema_lights_on #optional will be called when break starts
+endHAScript: cinema_lights_on #optional will be called when sequence ends
+jellyfinDomain: domain-here # make sure to include protocol (http/https)
+jellyfinAPIKey: key-here # make one in jellyfin settings
+homeAssistantDomain: domain-here #optional make sure to include protocol (http/https)
+homeAssistantAPIKey: key-here #optional (make one in profile -> advanced -> create long lived token)
