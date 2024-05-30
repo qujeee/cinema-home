@@ -82,7 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: cinema-home/ubuntu-build/cinema-home-linux.AppImage
+          asset_path: ubuntu-build
           asset_name: cinema-home-linux.AppImage
           asset_content_type: application/octet-stream
 
@@ -92,7 +92,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: cinema-home/mac-build/cinema-home-mac.dmg
+          asset_path: mac-build
           asset_name: cinema-home-mac.dmg
           asset_content_type: application/octet-stream
 
@@ -102,7 +102,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: cinema-home/windows-build/cinema-home-windows.exe
+          asset_path: windows-build
           asset_name: cinema-home-windows.exe
           asset_content_type: application/octet-stream
 
@@ -112,6 +112,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: example.zip
+          asset_path: /
           asset_name: example.zip
           asset_content_type: application/zip
