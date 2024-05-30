@@ -23,3 +23,5 @@ With Cinema Home you can create a seamless cinema experience at home.
 
 > You can exit Cinema Home by holding `ESC` for 5 seconds\
 > Open DevTools by pressing `i`
+
+> v1.0.0
