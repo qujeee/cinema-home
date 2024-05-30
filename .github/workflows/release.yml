@@ -1,0 +1,117 @@
+name: Build and Release Electron App
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger the workflow on version tags
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22' # Specify your Node.js version
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: cinema-home
+
+      - name: Build Electron app
+        run: npm run make
+        working-directory: cinema-home
+
+
+      - name: Upload Artifacts
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}-build
+          path: out/ # Adjust according to your build output directory
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ubuntu-latest-build
+          path: ubuntu-build
+
+      - name: Download Mac Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: macos-latest-build
+          path: mac-build
+
+      - name: Download Windows Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: windows-latest-build
+          path: windows-build
+
+      - name: Zip the other folder
+        run: zip -r example.zip example
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ubuntu-build/*.AppImage
+          asset_name: cinema-home-linux.AppImage
+          asset_content_type: application/octet-stream
+
+      - name: Upload Mac Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: mac-build/*.dmg
+          asset_name: cinema-home-mac.dmg
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: windows-build/*.exe
+          asset_name: cinema-home-windows.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Other Folder Zip
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: example.zip
+          asset_name: example.zip
+          asset_content_type: application/zip

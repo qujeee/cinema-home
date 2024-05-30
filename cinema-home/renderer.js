@@ -84,37 +84,31 @@ function hideBreakImage(hide) {
 }
 
 
-function playPlaylist(movieUrl) {
+async function playPlaylist(movieUrl) {
         try {
-            playlist = doc.sequence.map(obj => ({...obj}));
-            for (let i = 0; i < playlist.length; i++) {
-                if (playlist[i].c === "commercials") {
-                    const commercialHA = playlist[i].HA;
-                    loadRandomFiles(dir + '/commercials', doc.commercialAmount).then((files) => {
-                        playlist.splice(i, 1);
-                        files.forEach((file, index) => {
-                            playlist.splice(i + index, 0, index === 0 ? {c: dir + '/commercials/' + file, HA: commercialHA} : {c: dir + '/commercials/' + file});
-                        });
-                       
+            playlist = [];
+            const newPlaylist = doc.sequence.map(obj => ({...obj}));
+            for (let i = 0; i < newPlaylist.length; i++) {
+                if (newPlaylist[i].c === "commercials") {
+                    const commercialHA = newPlaylist[i].HA  ?? "";
+                    const files = await loadRandomFiles(dir + '/commercials', doc.commercialAmount);
+                    files.forEach((file, index) => {
+                        playlist.push((index === 0 && commercialHA != "") ? {c: dir + '/commercials/' + file, HA: commercialHA} : {c: dir + '/commercials/' + file});
                     });
-                } else if (playlist[i].c === "trailers") {
-                    const trailerHA = playlist[i].HA;
-                    loadRandomFiles(dir + '/trailers', doc.trailerAmount).then((files) => {
-                        playlist.splice(i, 1);
-                        files.forEach((file, index) => {
-                            playlist.splice(i + index, 0, index === 0 ? {c: dir + '/trailers/' + file, HA: trailerHA} : {c: dir + '/trailers/' + file});
-                        });
-                       
+                } else if (newPlaylist[i].c === "trailers") {
+                    const trailerHA = newPlaylist[i].HA ?? "";
+                    const files = await loadRandomFiles(dir + '/trailers', doc.trailerAmount);
+                    files.forEach((file, index) => {
+                        playlist.push((index === 0 && trailerHA != "") ? {c: dir + '/trailers/' + file, HA: trailerHA} : {c: dir + '/trailers/' + file});
                     });
-                } else if (playlist[i].c === "movie") {
-                    playlist[i].c = movieUrl;
-                    movieIndex = i;
-                    
+                } else if (newPlaylist[i].c === "movie") {
+                    playlist.push({c: movieUrl, HA: newPlaylist[i].HA});
                 } else {
-                    playlist[i].c = dir + `/videos/${playlist[i].c}`;
+                    playlist.push({c: dir + `/videos/${newPlaylist[i].c}`, HA: newPlaylist[i].HA});
                 }
                 
             }
+            movieIndex = playlist.findIndex(item => item.c === movieUrl);
             isPlaying = true;
             middleDetected = false;
             hideVideo(false)
@@ -239,16 +233,21 @@ ipcRenderer.on('forward-15', (_event, arg) => {
 
 
 ipcRenderer.on('skip', (_event, arg) => {
+    video.removeEventListener('timeupdate', detectMiddle);
     if (isPlaying) {
         currentVideoIndex++;
         if (currentVideoIndex < playlist.length) {
             loadVideo(currentVideoIndex);
             video.play();
+            if (currentVideoIndex === movieIndex) {
+                video.addEventListener('timeupdate', detectMiddle );
+            }
         } else {
             isPlaying = false;
             video.pause();
             hideVideo(true)
             mainImage.style.visibility = 'visible';
+            callHAScript(doc.endHAScript);
         }
     }
     

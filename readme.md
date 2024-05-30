@@ -17,4 +17,9 @@ With Cinema Home you can create a seamless cinema experience at home.
 4. Follow the instruction on screen
 5. Enjoy!
 
-> You can exit Cinema Home by holding ESC for 5 seconds
+<img src="web-ui.jpg" alt="The Cinema Home web-ui" width="340"/>
+<br/>
+<br/>
+
+> You can exit Cinema Home by holding `ESC` for 5 seconds\
+> Open DevTools by pressing `i`

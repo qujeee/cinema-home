@@ -7,6 +7,7 @@ const path = require('path');
 const axios = require('axios');
 const ytdl = require('ytdl-core');
 
+
 const TRAILERS_FOLDER = __dirname + '/trailers';
 const TRAILER_LIMIT = 5; // Number of trailers to fetch
 const LANGUAGE = 'en-US'; // Language to use for TMDB (https://developer.themoviedb.org/docs/languages)
@@ -83,5 +84,6 @@ const main = async () => {
     }
 };
 
-// Run the script
-main();
+module.exports = {
+    main
+};

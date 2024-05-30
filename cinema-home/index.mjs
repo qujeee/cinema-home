@@ -1,23 +1,4 @@
-// const { app, BrowserWindow } = require('electron')
-
-// const createWindow = () => {
-//   const win = new BrowserWindow({
-//     fullscreen: true,
-//   })
-//   win.webContents.on('dom-ready', (event)=> {
-//     let css = '* { cursor: none !important; }';
-//     win.webContents.insertCSS(css);
-//   });
-
-//   win.loadFile('index.html')
-// }
-
-// app.whenReady().then(() => {
-//   createWindow()
-// })
-
-
-import { app, BrowserWindow, ipcMain  } from 'electron';
+import { app, BrowserWindow, ipcMain, powerSaveBlocker  } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
@@ -25,7 +6,6 @@ import axios from 'axios';
 import loudness from 'loudness';
 import yaml from 'js-yaml';
 import fs from 'fs';
-import cp from 'child_process';
 import schedule from 'node-schedule';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,8 +18,6 @@ import Store from 'electron-store';
 
 const store = new Store();
 const dir = store.get('dir') ?? '';
-
-
 
 let mainWindow;
 
@@ -75,9 +53,11 @@ app.whenReady().then(() => {
         jellyfinAPIKey = doc.jellyfinAPIKey;
         var trailerFetchScript = doc.trailerFetchScript
         if (trailerFetchScript && fs.existsSync(dir + '/' + trailerFetchScript)) {
-            cp.fork(dir + '/' + trailerFetchScript);
-            schedule.scheduleJob('0 0 * * *', function() {
-                cp.fork(dir + '/' + trailerFetchScript);
+            import(dir + '/' + trailerFetchScript).then((module) => {
+                module.main();
+                schedule.scheduleJob('0 0 * * *', function() {
+                    module.main();
+                });
             });
         }
     } catch (error) {
@@ -228,6 +208,7 @@ app.whenReady().then(() => {
     } catch (error) {
         console.error(error);
     }
+    powerSaveBlocker.start('prevent-display-sleep');
     createWindow();
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()

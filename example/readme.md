@@ -20,7 +20,16 @@ To add intros and outros to your sequence, place the corresponding video files i
 
 ## Fetching trailers
 
-You can optionally define a fetchTrailerScript in `config.yml`. This NodeJS script will run every 24 hours. The script needs to be placed in the same folder as the `config.yml`.
+You can optionally define a fetchTrailerScript in `config.yml`. Cinema Home will run the exported main function from this script.
+Export the function main like this:
+
+```
+module.exports = {
+    main
+};
+```
+
+The script needs to be placed in the same folder as the `config.yml`.
 For the tmdb_fetch_trailers.js script to work you will need to run `npm install axios ytdl-core when using this script`
 
 ## Starting Cinema Home
