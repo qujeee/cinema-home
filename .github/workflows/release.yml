@@ -20,6 +20,8 @@ jobs:
         asset_path: ./example.zip
         asset_name: example.zip
         asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish_on_linux:
     runs-on: ubuntu-latest
