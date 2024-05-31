@@ -61,7 +61,7 @@ jobs:
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: DEBUG="@malept/flatpak-bundler" npm run builderpublish
+      run: DEBUG="@malept/flatpak-bundler" sudo npm run builderpublish
       working-directory: ./cinema-home
 
   # publish_on_mac:
