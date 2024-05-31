@@ -39,6 +39,10 @@
   },
   "author": "Qujeee",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qujeee/cinema-home.git"
+},
   "description": "Cinema Home brings the cinema experience to your home",
   "devDependencies": {
     "@electron-forge/cli": "^7.4.0",
