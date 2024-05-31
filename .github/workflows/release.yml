@@ -33,6 +33,8 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 20
+    - name: install libarchive-tools
+      run: sudo apt install libarchive-tools
     - name: install dependencies
       run: npm install
     - name: publish
