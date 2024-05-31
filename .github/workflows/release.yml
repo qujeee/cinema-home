@@ -6,24 +6,16 @@ on:
 
 jobs:
 
-  publish_on_linux_and_include_example-zip:
+  publish_on_linux:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cinema-home
     steps:
     - uses: actions/checkout@v4      
     - uses: actions/setup-node@master
       with:
         node-version: 20
-    - name: Zip example folder
-      run: zip -r example.zip ./example
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: example.zip
-        asset_name: example.zip
-        asset_content_type: application/zip
-    - name: go to Electron folder
-      run: cd cinema-home
     - name: install dependencies
       run: npm install
     - name: publish
@@ -65,4 +57,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish
 
-    
+  include-example-zip:
+    runs-on: ubuntu-latest
+    - name: Zip example folder
+      run: zip -r example.zip ./example
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: example.zip
+        asset_name: example.zip
+        asset_content_type: application/zip
