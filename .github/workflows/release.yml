@@ -15,13 +15,15 @@ jobs:
         node-version: 20
     - name: Zip example folder
       run: zip -r example.zip ./example
-    - name: Upload example folder
-      uses: actions/upload-artifact@v4
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
       with:
-        name: example
-        path: ./example.zip
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: example.zip
+        asset_name: example.zip
+        asset_content_type: application/zip
     - name: go to Electron folder
-      run: cd ./cinema-home
+      run: cd cinema-home
     - name: install dependencies
       run: npm install
     - name: publish

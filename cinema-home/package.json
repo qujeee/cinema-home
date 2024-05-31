@@ -6,22 +6,9 @@
     "start": "electron-forge start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "electron-forge package",
-    "make": "electron-forge make"
-  },
-  "config": {
-    "forge": {
-      "publishers": [
-        {
-          "name": "@electron-forge/publisher-github",
-          "config": {
-            "repository": {
-              "owner": "qujeee",
-              "name": "cinema-home"
-            }
-          }
-        }
-      ]
-    }
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
+    
   },
   "author": "Qujeee",
   "license": "ISC",
