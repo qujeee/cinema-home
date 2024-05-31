@@ -38,7 +38,6 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: 20
-      working-directory: ./cinema-home
     - name: install libarchive-tools
       run: sudo apt install libarchive-tools
       working-directory: ./cinema-home
