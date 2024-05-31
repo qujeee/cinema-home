@@ -1,22 +1,35 @@
 name: Release
 on:
-  release:
-    types:
-      - created
+  workflow_dispatch:
 
 jobs:
 
-  include_example_zip:
+  create_release_and_include_example:
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repository
       uses: actions/checkout@v4
+    - name: Get version
+      id: get_version
+      run: echo ::set-output name=version::$(node -p "require('./package.json').version")
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.get_version.outputs.version }}
+        release_name: Cinema Home v${{ steps.get_version.outputs.version }}
+        body: |
+          New release of Cinema Home
+        draft: true
+        prerelease: false
     - name: Zip example folder
       run: zip -r example.zip example/
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       with:
-        upload_url: ${{ github.event.release.upload_url }}
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./example.zip
         asset_name: example.zip
         asset_content_type: application/zip
