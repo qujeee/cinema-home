@@ -59,7 +59,9 @@ jobs:
 
   include_example_zip:
     runs-on: ubuntu-latest
-    working-directory: ./
+    defaults:
+      run:
+        working-directory: ./
     steps:
     - name: Zip example folder
       run: zip -r example.zip example
