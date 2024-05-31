@@ -42,10 +42,12 @@ jobs:
       run: sudo apt install libarchive-tools
       working-directory: ./cinema-home
     - name: install flatpak
-      run: sudo apt install flatpak
+      run: sudo apt install flatpak -y
       working-directory: ./cinema-home
     - name: install flatpak-builder
-      run: sudo apt install flatpak-builder
+      run: sudo apt install flatpak-builder -y
+    - name: install elfutils
+      run: sudo apt install elfutils -y
       working-directory: ./cinema-home
     - name: install dependencies
       run: npm install
@@ -53,7 +55,7 @@ jobs:
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run builderpublish
+      run: DEBUG="@malept/flatpak-bundler" npm run builderpublish
       working-directory: ./cinema-home
 
   publish_on_mac:
