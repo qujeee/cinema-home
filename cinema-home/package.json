@@ -26,7 +26,7 @@
       ]
     },
     "linux": {
-      "target": ["deb", "rpm", "pacman"],
+      "target": ["flatpak"],
       "publish": [
         "github"
       ]

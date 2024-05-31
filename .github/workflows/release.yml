@@ -4,7 +4,7 @@ on:
 
 jobs:
 
-  create_release_and_include_example:
+  create_release_and_build_linux:
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repository
@@ -34,26 +34,28 @@ jobs:
         asset_name: example.zip
         asset_content_type: application/zip
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish_on_linux:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./cinema-home
-    steps:
-    - uses: actions/checkout@v4      
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     - uses: actions/setup-node@master
       with:
         node-version: 20
+      working-directory: ./cinema-home
     - name: install libarchive-tools
       run: sudo apt install libarchive-tools
+      working-directory: ./cinema-home
+    - name: install flatpak
+      run: sudo apt install flatpak
+      working-directory: ./cinema-home
+    - name: install flatpak-builder
+      run: sudo apt install flatpak-builder
+      working-directory: ./cinema-home
     - name: install dependencies
       run: npm install
+      working-directory: ./cinema-home
     - name: publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run builderpublish
+      working-directory: ./cinema-home
 
   publish_on_mac:
     runs-on: macos-latest
