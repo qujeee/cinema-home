@@ -1,0 +1,11 @@
+{
+    "name": "cinema-home",
+    "version": "1.0.0",
+    "author": "qujeee <qujeee@gmail.com>",
+    "license": "ISC",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/qujeee/cinema-home.git"
+    },
+    "description": "Cinema Home brings the cinema experience to your home"
+}
