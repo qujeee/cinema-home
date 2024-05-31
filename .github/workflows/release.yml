@@ -48,7 +48,10 @@ jobs:
       run: sudo apt install flatpak-builder -y
       working-directory: ./cinema-home
     - name: install flathub
-      run: sudo flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+      run: sudo flatpak remote-add --if-not-exists --system flathub https://flathub.org/repo/flathub.flatpakrepo
+      working-directory: ./cinema-home
+     - name: install flatpak-builder
+      run: sudo apt install flatpak-builder -y
       working-directory: ./cinema-home
     - name: install runtime
       run: sudo flatpak install flathub org.freedesktop.Platform/x86_64/20.08 -y
