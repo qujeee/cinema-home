@@ -57,7 +57,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish
 
-  include-example-zip:
+  include_example_zip:
     runs-on: ubuntu-latest
     - name: Zip example folder
       run: zip -r example.zip ./example
