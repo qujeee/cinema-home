@@ -51,13 +51,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish
 
-    zip_example_folder:
-      runs-on: ubuntu-latest
-      steps:
-      - name: Zip example folder
-        run: zip -r example.zip ./example
-      - name: Upload example folder
-        uses: actions/upload-artifact@v2
-        with:
-          name: example
-          path: ./example.zip
+  zip_example_folder:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Zip example folder
+      run: zip -r example.zip ./example
+    - name: Upload example folder
+      uses: actions/upload-artifact@v4
+      with:
+        name: example
+        path: ./example.zip
