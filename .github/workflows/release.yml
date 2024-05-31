@@ -6,6 +6,19 @@ on:
 
 jobs:
 
+  include_example_zip:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Zip example folder
+      run: zip -r example.zip example/
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./example.zip
+        asset_name: example.zip
+        asset_content_type: application/zip
+
   publish_on_linux:
     runs-on: ubuntu-latest
     defaults:
@@ -56,19 +69,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish
-
-  include_example_zip:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
-    steps:
-    - name: Zip example folder
-      run: zip -r example.zip example
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: example.zip
-        asset_name: example.zip
-        asset_content_type: application/zip
