@@ -59,6 +59,7 @@ jobs:
 
   include_example_zip:
     runs-on: ubuntu-latest
+    steps:
     - name: Zip example folder
       run: zip -r example.zip ./example
     - name: Upload Release Asset
