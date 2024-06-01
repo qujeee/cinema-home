@@ -1,6 +1,6 @@
 {
   "name": "cinema-home",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.mjs",
   "scripts": {
     "start": "electron-forge start",
@@ -14,19 +14,25 @@
     "appId": "com.qujeee.cinema-home",
     "productName": "Cinema Home",
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "publish": [
         "github"
       ]
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "publish": [
         "github"
       ]
     },
     "linux": {
-      "target": ["flatpak"],
+      "target": [
+        "flatpak"
+      ],
       "publish": [
         "github"
       ]

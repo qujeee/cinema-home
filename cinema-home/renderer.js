@@ -38,8 +38,12 @@ waitForDir().then((newDir) => {
         console.log(error);
         document.getElementById("main-image").style.visibility  = 'hidden';
         document.getElementById("break-image").style.visibility = 'hidden';
-        require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-            document.getElementById("ip").innerText = 'Visit http://' + add.toString();
+        require('dns').lookup(require('os').hostname(), { family: 4 }, function (err, add, fam) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            document.getElementById("ip").innerText = 'Visit http://' + add.toString() + ':1888';
         })
        
         welcomeImage.style.visibility = 'visible';

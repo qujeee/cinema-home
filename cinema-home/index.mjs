@@ -202,14 +202,14 @@ app.whenReady().then(() => {
     });
     
     try {
-        server.listen(80, () => {
-            console.log('Server running on port 80');
+        server.listen(1888, () => {
+            console.log('Server running on port 1888');
         }).on('error', function(err) { console.log(err)});;
     } catch (error) {
         console.error(error);
     }
-    powerSaveBlocker.start('prevent-display-sleep');
     createWindow();
+    powerSaveBlocker.start('prevent-display-sleep');
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     });
