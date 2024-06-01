@@ -1,6 +1,6 @@
 # Cinema Home Example
 
-This folder contains example data for Cinema Home. Create a folder and copy all contents from the example folder. Start the Cinema Home app and visit http://host-ip, go to settings and set the path to your Cinema Home folder.
+This folder contains example data for Cinema Home. Create a folder and copy all contents from the example folder. Start the Cinema Home app and visit http://host-ip:1888, go to settings and set the path to your Cinema Home folder.
 
 ## Configuration
 
@@ -34,6 +34,6 @@ For the tmdb_fetch_trailers.js script to work you will need to have NodeJS insta
 
 ## Starting Cinema Home
 
-To start Cinema Home, run the Cinema Home program. Once it's running, you can access it on your phone by navigating to `http://host-ip`. From there, you can start a movie and control breaks.
+To start Cinema Home, run the Cinema Home program. Once it's running, you can access it on your phone by navigating to `http://host-ip:1888`. From there, you can start a movie and control breaks.
 
 Enjoy your movie experience with Cinema Home!
