@@ -20,8 +20,7 @@ jobs:
       with:
         tag_name: v${{ steps.get_version.outputs.version }}
         release_name: Cinema Home v${{ steps.get_version.outputs.version }}
-        body: |
-          New release of Cinema Home
+        body-path: ./.github/workflows/release-body.md
         draft: true
         prerelease: false
     - name: Zip example folder

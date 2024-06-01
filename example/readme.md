@@ -30,7 +30,7 @@ module.exports = {
 ```
 
 The script needs to be placed in the same folder as the `config.yml`.
-For the tmdb_fetch_trailers.js script to work you will maybe need to run `npm install axios ytdl-core` when using this script
+For the tmdb_fetch_trailers.js script to work you will need to have NodeJS installed and need to run `npm install axios ytdl-core` when using this script
 
 ## Starting Cinema Home
 

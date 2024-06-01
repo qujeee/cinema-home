@@ -259,14 +259,19 @@ ipcRenderer.on('skip', (_event, arg) => {
 
 function getFilesFromDirectory(directoryPath) {
     return new Promise((resolve, reject) => {
-      fs.readdir(directoryPath, (err, files) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(files);
-      });
+        fs.readdir(directoryPath, (err, files) => {
+            if (err) {
+                return reject(err);
+            }
+            // Filter the files to only include video files
+            const videoFiles = files.filter(file => {
+                const extension = file.split('.').pop();
+                return ['mp4', 'avi', 'mkv', 'mov', 'webm'].includes(extension);
+            });
+            resolve(videoFiles);
+        });
     });
-  }
+}
   
   // Function to shuffle an array
   function shuffleArray(array) {

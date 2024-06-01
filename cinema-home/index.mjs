@@ -109,20 +109,22 @@ app.whenReady().then(() => {
     });
 
     server.get('/status', async (req, res) => {
+        var err = '';
+        var volume = 0;
+        var autoBreak = true;
         try {
-            const volume = await loudness.getVolume();
-            var autoBreak = true;
-            try {
-                autoBreak = yaml.load(fs.readFileSync(dir + '/config.yml', 'utf8')).autoBreak;
-            } catch (error) {
-                console.error('Error reading config.yml:', error);
-            }
-            
-            res.json({ volume, autoBreak, dir});
+            volume = await loudness.getVolume();
         } catch (error) {
+            err = error;
             console.error(error);
-            res.sendStatus(500);
         }
+        try {
+            autoBreak = yaml.load(fs.readFileSync(dir + '/config.yml', 'utf8')).autoBreak;
+        } catch (error) {
+            err = error;
+            console.error('Error reading config.yml:', error);
+        }
+        res.json({ volume, autoBreak, dir, err});
     });
 
     server.post('/volume', async (req, res) => {
