@@ -35,16 +35,42 @@
             </div>
             <button id="break-button" class="text-white bg-amber-500 focus:ring-4 focus:outline-none focus:ring-amber-400 font-medium rounded-lg text-sm px-4 py-2 dark:bg-amber-500 dark:focus:ring-amber-400 w-full">Toggle break now</button>
         </div>
+        <div class="control-section">
+          <p class="control-label">Volume:</p>
+          <input type="range" min="0" max="100" value="0" class="range range-primary" id="volume"/>
+        </div>
         
-        <p class="control-label">Volume:</p>
-        <input type="range" min="0" max="100" value="0" class="range range-primary" id="volume"/>
         
         <div class="form-control">
             <label class="cursor-pointer label">
               <span class="control-label">Enable auto breaks mid-movie</span> 
               <input type="checkbox" class="toggle toggle-primary" id="auto-break" checked />
             </label>
+        </div>
+        <div class="control-section">
+          <p class="control-label">Rewind:</p>
+          <input type="range" min="0" max="125" value="0" class="range" step="25" style="transform: scaleX(-1);" id="rewind-slider"/>
+          <div class="w-full flex justify-between text-xs range-titles">
+            <p>1h</p>
+            <p>30m</p>
+            <p>15m</p>
+            <p>5m</p>
+            <p>1m</p>
+            <p>&nbsp;&nbsp;•</p>
           </div>
+        </div>
+        <div class="control-section">
+          <p class="control-label">Forward:</p>
+          <input type="range" min="0" max="125" value="0" class="range" step="25" id="forward-slider"/>
+          <div class="w-full flex justify-between text-xs">
+            <p>&nbsp;&nbsp;•</p>
+            <p>1m</p>
+            <p>5m</p>
+            <p>15m</p>
+            <p>30m</p>
+            <p>1h</p>
+          </div>
+        </div>
     </div>
     <dialog id="settings_modal" class="modal">
         <div class="modal-box">
@@ -62,6 +88,24 @@
             <form method="dialog" class="">
               <button class="btn">Close</button>
             </form>
+          </div>
+        </div>
+      </dialog>
+      <dialog id="stream_options_modal" class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg mb-2">Movie options</h3>
+          <p class="control-label">Subtitles</p>
+          <select id="subtitles" class="select select-bordered w-full max-w-xs">
+          </select>
+          <div class="modal-action flow-grow">
+            <form method="dialog" class="">
+              <button class="btn">Close</button>
+              <button id="play-button" class="btn btn-success">
+                Play now
+              </button>
+            </form>
+            
+            
           </div>
         </div>
       </dialog>

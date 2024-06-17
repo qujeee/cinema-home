@@ -6,6 +6,10 @@ body {
     padding: 20px;
 }
 
+.control-section{
+    padding: 8px 4px;
+}
+
 .control-label {
     margin-bottom: 5px;
 }
@@ -15,3 +19,7 @@ body {
     height: 1em;
     vertical-align: -0.125em;
   }
+
+.range-titles p {
+    width: 20px;
+}

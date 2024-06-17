@@ -1,7 +1,16 @@
 
 
-
-const video = document.getElementById('video');
+const videojs = require('video.js');
+const video = videojs('video', {
+    controlBar: false,
+    loadingSpinner: false,
+    bigPlayButton: false,
+    controls: false,
+    textTrackSettings: false,
+    fill: true,
+    html5: {nativeTextTracks: true}
+  });
+const videoDOM = document.getElementById('video');
 const mainImage = document.getElementById('main-image');
 const breakImage = document.getElementById('break-image');
 const welcomeImage = document.getElementById('welcome-image');
@@ -61,17 +70,30 @@ let currentVideoIndex = 0;
 let movieIndex = 0;
 let isPlaying = false;
 var middleDetected = false;
+var subtitleUrl = '';
 
 function loadVideo(index) {
-    video.src = playlist[index].c;
+    document.getElementsByName("video").innerHTML = '';
+    video.src(playlist[index].c);
+    
+    if (index === movieIndex && subtitleUrl !== "") {
+        video.addRemoteTextTrack({
+            kind: 'captions',
+            label: 'Captions',
+            src: subtitleUrl,
+            srclang: 'en',
+            default: true
+        });
+    }
+    
     video.load();
 }
 
 function hideVideo(hide) {
     if (hide) {
-        video.style.visibility = 'hidden';
+        videoDOM.style.visibility = 'hidden';
     } else {
-        video.style.visibility = 'visible';
+        videoDOM.style.visibility = 'visible';
     }
 }
 
@@ -106,13 +128,15 @@ async function playPlaylist(movieUrl) {
                         playlist.push((index === 0 && trailerHA != "") ? {c: dir + '/trailers/' + file, HA: trailerHA} : {c: dir + '/trailers/' + file});
                     });
                 } else if (newPlaylist[i].c === "movie") {
-                    playlist.push({c: movieUrl, HA: newPlaylist[i].HA});
+                    const movieHA = newPlaylist[i].HA ?? "";
+                    subtitleUrl = movieUrl.subUrl;
+                    playlist.push((movieHA != "") ? {c: movieUrl.src, HA: movieHA} : {c: movieUrl.src});
                 } else {
                     playlist.push({c: dir + `/videos/${newPlaylist[i].c}`, HA: newPlaylist[i].HA});
                 }
                 
             }
-            movieIndex = playlist.findIndex(item => item.c === movieUrl);
+            movieIndex = playlist.findIndex(item => item.c === movieUrl.src);
             isPlaying = true;
             middleDetected = false;
             hideVideo(false)
@@ -129,8 +153,8 @@ async function playPlaylist(movieUrl) {
 }
 
 function detectMiddle() {
-    const currentTime = video.currentTime;
-    const duration = video.duration;
+    const currentTime = video.currentTime();
+    const duration = video.duration();
 
     // Check if the video has a valid duration
     if (duration > 0) {
@@ -145,7 +169,7 @@ function detectMiddle() {
                     video.pause();
                     hideVideo(true);
                     hideBreakImage(false);
-                    video.currentTime -= 30;
+                    video.currentTime(currentTime  - 30);
                 }
             } catch (error) {
                 console.log(error);
@@ -165,7 +189,7 @@ async function callHAScript(script)  {
     });
 }
 
-video.addEventListener('play', async () => {
+video.on('play', async () => {
     const script = playlist[currentVideoIndex].HA;
     if (script && script !== "") {
         callHAScript(script);
@@ -173,14 +197,14 @@ video.addEventListener('play', async () => {
 } );
 
 
-video.addEventListener('ended', () => {
-    video.removeEventListener('timeupdate', detectMiddle);
+video.on('ended', () => {
+    video.off('timeupdate', detectMiddle);
     currentVideoIndex++;
     if (currentVideoIndex < playlist.length) {
         loadVideo(currentVideoIndex);
         video.play();
         if (currentVideoIndex === movieIndex) {
-            video.addEventListener('timeupdate', detectMiddle );
+            video.on('timeupdate', detectMiddle );
             
         }
         
@@ -188,7 +212,10 @@ video.addEventListener('ended', () => {
         isPlaying = false;
         hideVideo(true)
         mainImage.style.visibility = 'visible';
-        callHAScript(doc.endHAScript);
+        const endHAScript = doc.endHAScript ?? "";
+        if (endHAScript != "") {
+            callHAScript(endHAScript);
+        }
     }
 });
 
@@ -197,7 +224,7 @@ function toggleBreak() {
         video.pause();
         hideVideo(true);
         hideBreakImage(false);
-        video.currentTime -= 30;
+        video.currentTime(video.currentTime() - 30);
         const script = doc.breakHAScript;
         if (script && script !== "") {
             callHAScript(script);
@@ -227,31 +254,36 @@ ipcRenderer.on('toggle-break', (_event, arg) => {
 });
 
 ipcRenderer.on('rewind-15', (_event, arg) => {
-   video.currentTime -= 15;
+    video.currentTime(video.currentTime() - 15);
 });
 
 ipcRenderer.on('forward-15', (_event, arg) => {
-    video.currentTime += 15;
+    video.currentTime(video.currentTime() + 15);
  });
 
-
+ipcRenderer.on('timeChange', (_event, arg) => {
+    video.currentTime(video.currentTime() + arg);
+});
 
 ipcRenderer.on('skip', (_event, arg) => {
-    video.removeEventListener('timeupdate', detectMiddle);
+    video.off('timeupdate', detectMiddle);
     if (isPlaying) {
         currentVideoIndex++;
         if (currentVideoIndex < playlist.length) {
             loadVideo(currentVideoIndex);
             video.play();
             if (currentVideoIndex === movieIndex) {
-                video.addEventListener('timeupdate', detectMiddle );
+                video.on('timeupdate', detectMiddle );
             }
         } else {
             isPlaying = false;
             video.pause();
             hideVideo(true)
             mainImage.style.visibility = 'visible';
-            callHAScript(doc.endHAScript);
+            const endHAScript = doc.endHAScript ?? "";
+            if (endHAScript != "") {
+                callHAScript(doc.endHAScript);
+            }
         }
     }
     
