@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import express from 'express';
 import axios from 'axios';
-import loudness from 'loudness';
+import { setVolume, getVolume } from "easy-volume";
 import yaml from 'js-yaml';
 import fs from 'fs';
 import schedule from 'node-schedule';
@@ -126,7 +126,7 @@ app.whenReady().then(() => {
         var volume = 0;
         var autoBreak = true;
         try {
-            volume = await loudness.getVolume();
+            volume = await getVolume();
         } catch (error) {
             err = error;
             console.error(error);
@@ -147,7 +147,7 @@ app.whenReady().then(() => {
                 return res.status(400).send('Volume must be a number between 0 and 100');
             }
     
-            await loudness.setVolume(volume);
+            await setVolume(volume);
             res.sendStatus(200);
         } catch (error) {
             console.error(error);

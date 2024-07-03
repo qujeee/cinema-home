@@ -170,6 +170,10 @@ function detectMiddle() {
                     hideVideo(true);
                     hideBreakImage(false);
                     video.currentTime(currentTime  - 30);
+                    const script = doc.breakHAScript;
+                    if (script && script !== "") {
+                        callHAScript(script);
+                    }
                 }
             } catch (error) {
                 console.log(error);
