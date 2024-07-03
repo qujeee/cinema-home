@@ -8,7 +8,7 @@ sequence: # every time you start a movie this sequence will be played
   - c: cc_logo_close-up_animation.mp4
   - c: movie # this will be the movie that you selected from the web-ui
     HA: cinema_turn_off_lights
-commercialAmmount: 3 # the amount of commercials that will be included in the commercial block
+commercialAmount: 3 # the amount of commercials that will be included in the commercial block
 trailerAmount: 2 # the amount of trailers that will be inlcuded in the trailer block
 trailerFetchScript: fetch_script.js #optional a Javascript script that will be called to fetch trailers (will run every 24 hours), for example: tmbd_fetch_trailers.js (you have to install NodeJS and run npm install axios ytdl-core before using this script)
 autoBreak: true # will auto start an intermission mid movie
